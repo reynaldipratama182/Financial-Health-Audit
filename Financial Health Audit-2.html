@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Financial Health Audit</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F8FB;--card:#fff;--ink:#0B2545;--mute:#5B6B82;--line:#D9E1EC;--blue:#1D4ED8;--green:#15803D;--amber:#B45309;--red:#B91C1C;--tint:#EAF0FB;--optbg:#DCE7FB;--glow:rgba(29,78,216,.35);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1424;--card:#101E36;--ink:#EAF0FB;--mute:#93A4BF;--line:#243656;--blue:#6C93FF;--green:#4ADE80;--amber:#FBBF24;--red:#F87171;--tint:#16294A;--optbg:#24467F;--glow:rgba(108,147,255,.55)}}
+:root[data-theme="dark"]{--bg:#0A1424;--card:#101E36;--ink:#EAF0FB;--mute:#93A4BF;--line:#243656;--blue:#6C93FF;--green:#4ADE80;--amber:#FBBF24;--red:#F87171;--tint:#16294A;--optbg:#24467F;--glow:rgba(108,147,255,.55)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.5;font-size:17px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+section{padding:64px 0}
+h1{font-size:clamp(2.2rem,7vw,3.8rem);line-height:1.05;font-weight:800;margin:0 0 18px;letter-spacing:-.02em}
+h2{font-size:1.9rem;line-height:1.15;margin:0 0 12px;font-weight:800}
+p{margin:0 0 16px;color:var(--mute)}
+.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:14px 26px;cursor:pointer;background:var(--blue);color:#fff;font-size:1rem;text-decoration:none;display:inline-block}
+:root[data-theme="dark"] .btn,:root:not([data-theme="light"]) .btn{color:#fff}
+.btn:hover{filter:brightness(1.1)}
+.btn:focus-visible,.opt:focus-visible,input:focus-visible,.link:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.hero{padding-top:72px;display:grid;gap:36px}
+.stamp{justify-self:start;border:3px solid var(--green);color:var(--green);padding:8px 16px;font-weight:800;letter-spacing:.04em;transform:rotate(-4deg);border-radius:6px;font-size:.95rem}
+.hero .sub{font-size:1.15rem;max-width:560px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px}
+.bar{height:8px;background:var(--tint);border-radius:99px;overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;background:var(--green);width:0;transition:width .35s}
+.cat{color:var(--blue);font-weight:600;font-size:.95rem;margin-bottom:6px}
+.q{font-size:1.35rem;font-weight:600;line-height:1.3;margin:0 0 24px;color:var(--ink)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{font:inherit;font-weight:700;font-size:1.1rem;padding:18px;border-radius:12px;border:2px solid var(--blue);background:var(--optbg);color:var(--ink);cursor:pointer;transition:background .18s,color .18s,box-shadow .18s,transform .18s}
+.opt:hover{background:var(--blue);color:#fff;box-shadow:0 0 0 3px var(--glow),0 0 18px var(--glow);transform:translateY(-2px)}
+.opt:active{transform:translateY(0)}
+.opt.sel{border-color:var(--green);background:var(--green);color:#fff;box-shadow:0 0 0 3px var(--glow)}
+.nav{display:flex;justify-content:space-between;margin-top:20px;font-size:.9rem;color:var(--mute)}
+.link{background:none;border:0;font:inherit;color:var(--mute);cursor:pointer;text-decoration:underline;padding:4px}
+input[type=email]{width:100%;font:inherit;font-size:1.05rem;padding:15px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);margin-bottom:8px}
+.err{color:var(--red);font-size:.9rem;min-height:1.3em;margin-bottom:10px}
+.hidden{display:none!important}
+.ok{background:var(--tint);border-left:4px solid var(--green);padding:12px 16px;border-radius:8px;color:var(--ink);margin-bottom:24px;font-weight:600}
+.verdict{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-bottom:24px}
+.score{font-size:4rem;font-weight:800;line-height:1}
+.score small{font-size:1.3rem;color:var(--mute)}
+.status{font-weight:800;font-size:1.2rem}
+.op{color:var(--mute);margin:0}
+table{width:100%;border-collapse:collapse;margin:8px 0 28px}
+th,td{text-align:left;padding:12px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mute);font-weight:600;font-size:.9rem}
+.stars{color:var(--amber);letter-spacing:2px;white-space:nowrap;font-size:1.1rem}
+.sm{color:var(--mute);font-size:.88rem}
+ul.plan{padding-left:20px;margin:0 0 32px}
+ul.plan li{margin-bottom:12px;color:var(--ink)}
+footer{padding:24px 0 48px;font-size:.85rem;color:var(--mute)}
+@media(max-width:520px){.opts{grid-template-columns:1fr}.card{padding:20px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="stamp">AUDIT OPINION: PENDING</div>
+  <div>
+    <h1>Is Your Financial Game Plan Actually Safe?</h1>
+    <p class="sub">Take the 2-minute independent financial audit based on Cary Siegel's principles and get your brutal, honest financial health score.</p>
+    <button class="btn" id="start">Start My Audit Now</button>
+  </div>
+</header>
+
+<section id="quiz" class="hidden">
+  <div class="card" id="quizCard">
+    <div class="bar"><i id="prog"></i></div>
+    <div id="qBox">
+      <div class="cat" id="cat"></div>
+      <p class="q" id="qText"></p>
+      <div class="opts">
+        <button class="opt" data-v="1">Yes</button>
+        <button class="opt" data-v="0">No</button>
+      </div>
+      <div class="nav"><button class="link" id="back">Back</button><span id="count"></span></div>
+    </div>
+    <div id="gate" class="hidden">
+      <h2>Your Audit is Ready!</h2>
+      <p>Enter your email address below to unlock your Financial Health Score and get the full Audit Report &amp; Action Plan sent directly to your inbox.</p>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email" aria-label="Email address">
+      <div class="err" id="err" role="alert"></div>
+      <button class="btn" id="reveal">Reveal My Score &amp; Send Report</button>
+    </div>
+  </div>
+</section>
+
+<section id="report" class="hidden">
+  <div class="card">
+    <div class="ok">Success! A detailed copy of this report has been sent to your email.</div>
+    <div class="verdict">
+      <div class="score" id="score"></div>
+      <div><div class="status" id="status"></div><p class="op" id="opinion"></p></div>
+    </div>
+    <h2>Your 4 pillars</h2>
+    <table>
+      <thead><tr><th>Pillar</th><th>Rating</th><th>Checked</th></tr></thead>
+      <tbody id="pillars"></tbody>
+    </table>
+    <h2>Your action plan</h2>
+    <ul class="plan" id="plan"></ul>
+    <a class="btn" id="cta" href="https://wa.me/6280000000000?text=Hi%2C%20I%20just%20took%20the%20Financial%20Health%20Audit." target="_blank" rel="noopener">Need a custom system to fix this? Let's talk!</a>
+    <p class="sm" style="margin-top:20px"><button class="link" id="retake">Retake the audit</button></p>
+  </div>
+</section>
+<footer>Educational self-assessment, not financial advice. Inspired by Cary Siegel's "Why Didn't They Teach Me This in School?"</footer>
+</div>
+
+<script>
+var Q=[
+["Earning Power & Mindset","Do you currently have more than one source of income (side hustle, investments, freelance) aside from your main salary?"],
+["Earning Power & Mindset","Do you consciously prioritize increasing your earning power (new skills/career) rather than just stressing over saving pennies?"],
+["Expenses & Lifestyle","Do you consistently track or record your monthly expenses?"],
+["Expenses & Lifestyle","Do you successfully limit your luxury spending (fancy dining/hobbies) to less than 10% of your total monthly income?"],
+["Debt Management","Are you currently free from depreciating consumer debt (e.g., smartphone installments, paylater, lifestyle credit card debt)?"],
+["Debt Management","If you have long-term debt (like a mortgage), is it attached to an asset that appreciates in value or generates income? (If you have no debt, answer YES)."],
+["Assets & Emergency Fund","Do you have a liquid emergency fund (e.g., cash, high-yield savings, gold) equal to at least 3-6 months of your living expenses?"],
+["Assets & Emergency Fund","Have you diversified your assets (not putting all your money in one single basket)?"],
+["Safety Net & Future Planning","Do you (and your spouse, if applicable) have active health insurance to protect your assets from critical illness risks?"],
+["Safety Net & Future Planning","Do you have concrete, written financial goals for the next 5 years (e.g., pay off mortgage, early retirement)?"]
+];
+var FIX=[
+"You live on one paycheck. If it stops, everything stops. Build a second income stream, even a small one, within 6 months.",
+"Saving pennies won't save you if your income is flat. Pick one skill or career move that raises your pay and work on it every week.",
+"You can't fix what you don't measure. Record every expense for 30 days, then see where your money really goes.",
+"Luxury spending is eating your future. Cap it at 10% of income and automate the rest into savings first.",
+"Consumer debt is a leak in your boat. Pay off the highest-interest installment or paylater balance first and stop adding new ones.",
+"Debt on something that loses value or earns nothing is a trap. Restructure it or stop taking on more until it's tied to a real asset.",
+"One bad month could wipe you out. Build 3-6 months of living expenses in liquid cash before you invest a single rupiah elsewhere.",
+"All your eggs are in one basket. Spread across at least three asset types, such as cash, gold, and productive investments.",
+"One critical illness can erase years of savings. Get active health insurance for you and your family now.",
+"No written goals means no plan. Write down 3 concrete 5-year targets with numbers and deadlines."
+];
+var PRIORITY=[6,4,8,2,0,5,3,1,7,9];
+var PILLARS=[["Income Engine",[0,1]],["Cashflow Control",[2,3]],["Debt Control",[4,5]],["Liquidity",[6,7,8,9]]];
+var RES=[
+{min:9,code:"WTP",name:"Unqualified Opinion",status:"TOTALLY SAFE",c:"var(--green)"},
+{min:6,code:"WDP",name:"Qualified Opinion",status:"SAFE, BUT WITH CONDITIONS",c:"var(--blue)"},
+{min:3,code:"TMP",name:"Disclaimer of Opinion",status:"CODE RED",c:"var(--amber)"},
+{min:0,code:"TW",name:"Adverse Opinion",status:"FINANCIAL CRISIS",c:"var(--red)"}];
+var ans=[],cur=0;
+var $=function(id){return document.getElementById(id)};
+
+function render(){
+  $("cat").textContent=Q[cur][0];
+  $("qText").textContent=Q[cur][1];
+  $("count").textContent="Question "+(cur+1)+" of 10";
+  $("prog").style.width=(cur/10*100)+"%";
+  $("back").style.visibility=cur===0?"hidden":"visible";
+  document.querySelectorAll(".opt").forEach(function(b){
+    b.classList.toggle("sel",ans[cur]!==undefined&&String(ans[cur])===b.dataset.v);
+  });
+}
+document.querySelectorAll(".opt").forEach(function(b){
+  b.addEventListener("click",function(){
+    ans[cur]=+b.dataset.v;render();
+    setTimeout(function(){
+      if(cur<9){cur++;render()}
+      else{$("qBox").classList.add("hidden");$("gate").classList.remove("hidden");$("prog").style.width="100%";$("email").focus()}
+    },220);
+  });
+});
+$("back").addEventListener("click",function(){if(cur>0){cur--;render()}});
+$("start").addEventListener("click",function(){
+  $("quiz").classList.remove("hidden");
+  requestAnimationFrame(function(){requestAnimationFrame(function(){$("quiz").scrollIntoView({behavior:"smooth",block:"start"})})});
+});
+
+$("reveal").addEventListener("click",function(){
+  var v=$("email").value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){$("err").textContent="Enter a valid email address, like name@example.com.";$("email").focus();return}
+  $("err").textContent="";
+  var b=$("reveal");b.disabled=true;b.textContent="Sending your report...";
+  setTimeout(function(){showReport();b.disabled=false;b.innerHTML="Reveal My Score &amp; Send Report"},1200);
+});
+$("email").addEventListener("keydown",function(e){if(e.key==="Enter")$("reveal").click()});
+
+function stars(n){return "★".repeat(n)+"☆".repeat(5-n)}
+function showReport(){
+  var yes=ans.reduce(function(a,b){return a+b},0);
+  var r=RES.find(function(x){return yes>=x.min});
+  $("score").innerHTML=yes+'<small> / 10</small>';
+  $("status").textContent="Status: "+r.status;$("status").style.color=r.c;
+  $("opinion").textContent="Your Audit Opinion: "+r.code+" ("+r.name+")";
+  $("pillars").innerHTML=PILLARS.map(function(p){
+    var s=p[1].reduce(function(a,i){return a+ans[i]},0);
+    return "<tr><td><b>"+p[0]+"</b></td><td class='stars' aria-label='"+Math.round(s/p[1].length*5)+" of 5 stars'>"+stars(Math.round(s/p[1].length*5))+"</td><td class='sm'>"+s+" of "+p[1].length+" yes</td></tr>";
+  }).join("");
+  var fixes=PRIORITY.filter(function(i){return ans[i]===0}).slice(0,3).map(function(i){return FIX[i]});
+  var extra=["Keep your emergency fund topped up and review it every year as your expenses grow.","Rebalance your assets once a year so no single holding dominates.","Re-run this audit every 6 months and compare your score."];
+  while(fixes.length<3)fixes.push(extra[fixes.length]);
+  $("plan").innerHTML=fixes.map(function(f){return "<li>"+f+"</li>"}).join("");
+  $("report").classList.remove("hidden");
+  $("quiz").classList.add("hidden");
+  $("report").scrollIntoView({behavior:"smooth"});
+}
+$("retake").addEventListener("click",function(){
+  ans=[];cur=0;$("email").value="";
+  $("gate").classList.add("hidden");$("qBox").classList.remove("hidden");
+  $("report").classList.add("hidden");$("quiz").classList.remove("hidden");
+  render();$("quiz").scrollIntoView({behavior:"smooth"});
+});
+render();
+</script>
+</body>
+</html>
